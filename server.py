@@ -1,16 +1,18 @@
 import socket
 
-HOST = '127.0.0.1'
-PORT = 65432
+s = socket.socket()
+print("Socket successfully created")
 
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    s. bind((HOST, PORT))
-    s.listen()
-    conn, addr = s.accept()
-    with conn:
-        print('Connected by', addr)
-        while True:
-            data = conn.recv(1024)
-            if not data:
-                break
-            conn.sendall(data)
+port = 12345
+
+s.bind('', port)
+print("socket binded to %s" %(port))
+
+s.listen(5)
+print("socket is listening")
+
+while True:
+    c, addr = s.accept()
+    print("Got connection from",addr)
+    c.send("Thank you for connecting")
+    c.close()
