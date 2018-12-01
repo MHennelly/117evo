@@ -10,7 +10,7 @@ class EvoLauncher:
             self._genes[0] = velocity
         else:
             random.seed(time.clock())
-            self._genes[0] = random.randint(1,5)
+            self._genes[0] = random.randint(1,80)
         if angle:
             self._genes[1] = angle
         else:
@@ -34,7 +34,7 @@ class EvoLauncher:
 
     def mate(self, other):
         child1 = EvoLauncher(self.getVel(), other.getAng())
-        child2 = EvoLauncher(other.getVel(), self.Ang())
+        child2 = EvoLauncher(other.getVel(), self.getAng())
         child1.mutate()
         child2.mutate()
         return child1, child2
