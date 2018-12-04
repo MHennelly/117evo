@@ -59,7 +59,6 @@ class Simulation:
         fittest = self._population.getFittestMember()
         return fittest.getVel(), fittest.getAng()
 
-
     def run(self):
         self.firstGen()
         fittest = self._population.getFittestMember()
