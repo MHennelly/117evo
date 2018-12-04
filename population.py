@@ -3,7 +3,7 @@ import random
 import time
 from launcher import EvoLauncher
 
-class LauncherPopulation:
+class Population:
 
     def __init__(self):
         self._members = []
@@ -28,15 +28,12 @@ class LauncherPopulation:
 
     def newGeneration(self, parents):
         newGen = []
-        for _ in range(constants.POPSIZE * 3 // 8):
-            selection1 = random.randint(0,len(parents)-1)
-            selection2 = random.randint(0,len(parents)-1)
-            while selection2 == selection1:
-                selection2 = random.randint(0,len(parents)-1)
-            child1, child2, = parents[selection1].mate(parents[selection2])
-            #print(child1.getVel(), child1.getAng())
+        for _ in range(constants.POPSIZE):
+            selection1 = parents[random.randint(0,len(parents)-1)]
+            selection2 = parents[random.randint(0,len(parents)-1)]
+            while selection2.getVel() is selection1.getVel() and selection2.getAng() is selection1.getAng():
+                selection2 = parents[random.randint(0,len(parents)-1)]
+            child1, child2, = selection1.mate(selection2)
             newGen.append(child1)
             newGen.append(child2)
-        for _ in range(constants.POPSIZE // 4):
-            newGen.append(EvoLauncher())
         self._members = newGen

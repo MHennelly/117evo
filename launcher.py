@@ -10,7 +10,7 @@ class EvoLauncher:
             self._genes[0] = velocity
         else:
             random.seed(time.clock())
-            self._genes[0] = random.randint(1,80)
+            self._genes[0] = random.randint(1,constants.MAXVEL)
         if angle:
             self._genes[1] = angle
         else:
@@ -25,8 +25,8 @@ class EvoLauncher:
 
     def mutate(self):
         random.seed(time.clock())
-        chngVel = random.random() > constants.MUTATION_RATE
-        chngAng = random.random() > constants.MUTATION_RATE
+        chngVel = random.random() < constants.MUTATION_RATE
+        chngAng = random.random() < constants.MUTATION_RATE
         if chngVel:
             self._genes[0] += random.random() - 0.5
         else:
