@@ -15,10 +15,8 @@ print ("socket is listening")
 c, addr = s.accept()
 print ('Got connection from', addr)
 
-DataRecv= ""
-
-x = "yes"
-while x != "no":
+repeat = True
+while repeat is True:
       DataRecv = c.recv(1024).decode()
       Tx = int(DataRecv[DataRecv.find("(")+1:DataRecv.find(",")])
       Ty = int(DataRecv[DataRecv.find(",")+1:DataRecv.find(")")])
@@ -31,7 +29,6 @@ while x != "no":
       a.append(ang)
       DataSend = "Target was hit at" + DataRecv + " with velocity " + str(a[0]) + "and angle " + str(a[1])
       c.send(DataSend.encode())
-      x = c.recv(1024).decode()
-      s.send("Recived Data.".encode())
+      print(c.recv(1024).decode())
 
 c.close()
