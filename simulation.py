@@ -55,9 +55,14 @@ class Simulation:
         self.updateCosts()
         self._generation += 1
 
+    def getValues(self):
+        fittest = self._population.getFittestMember()
+        return fittest.getVel(), fittest.getAng()
+
+
     def run(self):
         self.firstGen()
         fittest = self._population.getFittestMember()
-        while self.calculateCost(fittest) > 1:
+        while self.calculateCost(fittest) > 2:
             self.naturalSelection()
             print(self.getHeight(fittest))
