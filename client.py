@@ -17,9 +17,9 @@ while repeat is True:
     print(s.recv(1024).decode())
     print("Do you want to try again? Y/N")
     repeat = (input() is "Y")
-    if repeat:
-        s.send("yes".encode())
+    if repeat is True:
+        s.send("Y".encode())
     else:
-        s.send("no".encode())
+        s.send("N".encode())
 
 s.close()

@@ -29,6 +29,12 @@ while repeat is True:
       a.append(ang)
       DataSend = "Target was hit at" + DataRecv + " with velocity " + str(a[0]) + "and angle " + str(a[1])
       c.send(DataSend.encode())
-      print(c.recv(1024).decode())
+      x = c.recv(1024).decode()
+      print(x)
+      if x is "Y":
+            repeat = True
+      if x is "N":
+            repeat = False
+            
 
 c.close()
