@@ -16,25 +16,26 @@ c, addr = s.accept()
 print ('Got connection from', addr)
 
 repeat = True
+sim = Simulation(0,0)
+sim.firstGen()
 while repeat is True:
-      DataRecv = c.recv(1024).decode()
-      Tx = int(DataRecv[DataRecv.find("(")+1:DataRecv.find(",")])
-      Ty = int(DataRecv[DataRecv.find(",")+1:DataRecv.find(")")])
-      sim = Simulation(Tx, Ty)
-      sim.run()
-      vel, ang = sim.getValues()
-      print(vel, ang)
-      a = []
-      a.append(vel)
-      a.append(ang)
-      DataSend = "Target was hit at" + DataRecv + " with velocity " + str(a[0]) + "and angle " + str(a[1])
-      c.send(DataSend.encode())
-      x = c.recv(1024).decode()
-      print(x)
-      if x is "Y":
-            repeat = True
-      if x is "N":
-            repeat = False
-            
-
+    DataRecv = c.recv(1024).decode()
+    print("Received target from client: ",DataRecv)
+    Tx = int(DataRecv[DataRecv.find("(")+1:DataRecv.find(",")])
+    Ty = int(DataRecv[DataRecv.find(",")+1:DataRecv.find(")")])
+    sim.changeTarget(Tx,Ty)
+    for _ in range(100):
+        sim.naturalSelection()
+        x, y, vel, ang, height, gen = sim.getValues()
+        DataSend = "Target: " + "(" + str(x) + "," + str(y) + ")\nVelocity: " + str(vel) + "\nAngle: " + str(ang) + "\nCalculated Final Height: " + str(height) + "\nGeneration: " + str(gen) + "\n\n\n"
+        c.send(DataSend.encode())
+        c.recv(1024).decode()
+    x = c.recv(1024).decode()
+    print("Received message from client: ",x)
+    if x is "Y":
+        repeat = True
+        print("Changing target...")
+    if x is "N":
+        repeat = False
+        print("Terminating server...\n")
 c.close()

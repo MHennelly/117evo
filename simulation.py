@@ -20,7 +20,7 @@ class Simulation:
 
     def calculateCost(self, launcher):
         height = self.getHeight(launcher)
-        return (math.fabs(self._target[1] - height) + 1)**2
+        return (math.fabs(self._target[1] - height) + 1)**3 + launcher.getVel() - 1
 
     def updateCosts(self):
         self._costs = []
@@ -48,20 +48,22 @@ class Simulation:
         self._generation += 1
 
     def naturalSelection(self):
+        self.updateCosts()
+        self.sortPopulation()
         self._population.select(constants.SELECTSIZE)
         parents = self._population.getMembers()
         parentDistribution = self.createParentDistribution(parents)
         self._population.newGeneration(parentDistribution)
-        self.updateCosts()
         self._generation += 1
 
     def getValues(self):
         fittest = self._population.getFittestMember()
-        return fittest.getVel(), fittest.getAng()
+        return self._target[0], self._target[1], fittest.getVel(), fittest.getAng(), self.getHeight(fittest), self._generation
 
     def run(self):
         self.firstGen()
-        fittest = self._population.getFittestMember()
-        while self.calculateCost(fittest) > 2:
+        for _ in range(10):
             self.naturalSelection()
-            print(self.getHeight(fittest))
+            fittest = self._population.getFittestMember()
+            # print((math.fabs(self._target[1] - self.getHeight(fittest)) + 1)**3 - 1)
+            # print(self.calculateCost(fittest),self.getHeight(fittest),"\n")
