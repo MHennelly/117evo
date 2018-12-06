@@ -32,10 +32,10 @@ while repeat is True:
         c.recv(1024).decode()
     x = c.recv(1024).decode()
     print("Received message from client: ",x)
-    if x is "Y":
+    if x == "Y":
         repeat = True
         print("Changing target...")
-    if x is "N":
+    else:
         repeat = False
         print("Terminating server...\n")
 c.close()
